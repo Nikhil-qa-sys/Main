@@ -1,37 +1,34 @@
-import { defineConfig, devices } from "@playwright/test";
-import dotenv from "dotenv";
-import path from "path";
-import { resolveEnv } from "./src/config/EnvResolver";
+import { defineConfig, devices } from "@playwright/test"
 
-dotenv.config({ path: path.resolve(__dirname, ".env") });
+// dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-const env = resolveEnv();
 
 export default defineConfig({
   testDir: "./tests",
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
 
   use: {
-    baseURL: env.BASE_URL,
-    trace: "on-first-retry",
+    // baseURL: env.BASE_URL,
+    // trace: "on-first-retry",
+    trace :'retain-on-failure'
   },
 
   projects: [
-    {
-      name: "api",
-      testMatch: /.*\.api\.spec\.ts/,
-      use: {
-        baseURL: env.API_BASE_URL,
-      },
+  {
+    name: "api",
+    testMatch: /.*\.api\.spec\.ts/,
+  },
+  {
+    name: "chromium-noauth",
+    testMatch: /.*\.spec\.ts/,
+    testIgnore: /.*\.api\.spec\.ts/,
+    use: {
+      ...devices["Desktop Chrome"],
     },
-    {
-      name: "chromium-noauth",
-      testMatch: /.*\.noauth\.spec\.ts/,
-      use: { ...devices["Desktop Chrome"] },
-    },
-  ],
+  },
+],
 });
