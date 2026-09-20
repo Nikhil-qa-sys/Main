@@ -36,7 +36,7 @@ test('get tags', async ({api})=>{
         expect(response).shouldMatchSchema('tags', 'GET_tags')
         // await validateSchema('tags', 'GET_tags', response)
     expect(response.tags.length).toBeGreaterThan(0)
-    expect(response.tags[0]).shouldEqual('Test12')
+    expect(response.tags[0]).shouldEqual('Test')
 
 })
 
