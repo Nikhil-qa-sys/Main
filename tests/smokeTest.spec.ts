@@ -28,7 +28,7 @@ test('Get Articles', async ({api})=>{
 
 })
 
-test.only('get tags', async ({api})=>{
+test('get tags', async ({api})=>{
 
     const response = await api
         .path('/tags')
